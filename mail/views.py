@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from .models import User, Email
 
@@ -21,8 +22,8 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
 
 
-@csrf_exempt
 @login_required
+@csrf_exempt
 def compose(request):
 
     # Composing a new email must be via POST
@@ -73,10 +74,10 @@ def compose(request):
 
 
 @login_required
-def mailbox(request, mailbox):
+def mailbox(request, mailbox, pageNum):
 
     # Filter emails returned based on mailbox
-    if mailbox == "inbox":
+    if mailbox == "inbox":  
         emails = Email.objects.filter(
             user=request.user, recipients=request.user, archived=False
         )
@@ -93,7 +94,10 @@ def mailbox(request, mailbox):
 
     # Return emails in reverse chronologial order
     emails = emails.order_by("-timestamp").all()
-    return JsonResponse([email.serialize() for email in emails], safe=False)
+    # create pages to display emails
+    paginator = Paginator(emails, 15)
+    data = [email.serialize() for email in paginator.page(pageNum)]
+    return JsonResponse(data, safe=False)
 
 
 @csrf_exempt
