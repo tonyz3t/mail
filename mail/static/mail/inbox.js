@@ -30,6 +30,23 @@ document.addEventListener('DOMContentLoaded', function () {
   sent = document.querySelector('#sent');
   archived = document.querySelector('#archived');
   compose = document.querySelector('#compose');
+  icon = document.querySelector('#icon');
+
+  icon.addEventListener('click', () => {
+    // set the button classes
+    inbox.className = "active active-first";
+    sent.className = "";
+    archived.className = "";
+    compose.className = "";
+
+    //add page to history and load mailbox
+    history.pushState({ mailbox: 'inbox' }, "", '');
+    // set current mailbox
+    localStorage.setItem('currentPage', 'inbox');
+    // load the mailbox at the first page
+    load_mailbox('inbox', 1);
+
+  })
 
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => {
@@ -38,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
     sent.className = "";
     archived.className = "";
     compose.className = "";
+
+    //make the current mailbox invisible before this mailbox loads
+    // document.querySelector('#emails-view').style.animationPlayState = 'running';
+    // document.querySelector('#emails-view').style.display = 'none';
 
     //add page to history and load mailbox
     history.pushState({ mailbox: 'inbox' }, "", '');

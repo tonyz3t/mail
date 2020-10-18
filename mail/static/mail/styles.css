@@ -29,6 +29,27 @@ textarea {
   }
 }
 
+.email-view {
+  animation: email-view-hide-anim 5s forwards;
+  animation-play-state: paused;
+
+}
+
+@keyframes email-view-hide-anim {
+  0% {
+    opacity: 1;
+    height: 100%;
+    line-height: 100%;
+    margin-bottom: 10px;
+  }
+  100% {
+    opacity: 0;
+    height: 0px;
+    line-height: 0px;
+    margin-bottom: 0px;
+  }
+}
+
 .main-nav{
   border-bottom: 2px solid #0b0a08;
   margin-bottom: 20px;
@@ -181,7 +202,7 @@ body {
   
     /**/
     .main-header .navbar-toggler .icon-bar {
-      background-color: #fff;
+      background-color: #0b0a08;
       margin: 0 auto 6px;
       border-radius: 0;
       width: 30px;
